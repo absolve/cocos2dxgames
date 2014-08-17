@@ -51,7 +51,7 @@ bool HelloWorld::init()
 	auto   onItem=MenuItemImage::create("pauseBT.png","pauseBT.png",
 											CC_CALLBACK_1(HelloWorld::pauseCallBack,this));
 	
-	onItem->setPosition(25,770);
+	onItem->setPosition(30,765);
 
     // create menu, it's an autorelease object
     auto menu = Menu::create(closeItem,NULL);
@@ -231,13 +231,15 @@ void  HelloWorld::pauseCallBack(Ref* pSender){
 	if(pauseFlag){
 		item1->setNormalSpriteFrame(spriteFrame->getSpriteFrameByName("pauseBT.png"));
 		item1->setSelectedSpriteFrame(spriteFrame->getSpriteFrameByName("pauseBT.png"));
-		this->changeState(GameStart::getInstance());
 		pauseFlag=false;
+		this->changeState(GameStart::getInstance());
+		
 	}else{
 		item1->setNormalSpriteFrame(spriteFrame->getSpriteFrameByName("startBT.png"));
 		item1->setSelectedSpriteFrame(spriteFrame->getSpriteFrameByName("startBT.png"));
-		this->changeState(GamePause::getInstance());
 		pauseFlag=true;
+		this->changeState(GamePause::getInstance());
+		
 	}
 
 
