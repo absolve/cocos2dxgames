@@ -49,16 +49,24 @@ public:
 	int         getHighScore();
 	//!滚动背景图
 	void        updateBackGround();
+	//!游戏暂停的切换
+	void        pauseCallBack(cocos2d::Ref* pSender);
+	//!游戏暂停标志
+	bool        pauseFlag;
+	
 public:
 
 	PlayerLayer   *		playerlayer;
 	EnemyLayer	  *		enemylayer;
-	GoodsLayer	  *		goodslayer;
 	cocos2d::LayerColor	  *fscore;
+	GoodsLayer	  *		goodslayer;
 
 	state<HelloWorld>  *currState;
 	//!游戏分数
 	int    scores;
+	void   setScore(int  s)  {scores=s;}
+	int	   getScore(){return  scores;}
+	void   scorePlus() {scores++;}
 	//!最高分
 	int    highScore;
 	int    getHS()  {return highScore;}
@@ -66,9 +74,6 @@ public:
 	char   a[20];
 	//!最高分数字符串
 	char   hs[20];
-	void   setScore(int  s)  {scores=s;}
-	int	   getScore(){return  scores;}
-	void   scorePlus() {scores++;}
 	//!获取接触的初始坐标
 	cocos2d::Point      point;
 	//!偏移量x,y

@@ -28,14 +28,23 @@ bool   WelcomeScene::init(){
 	auto  bd2=Sprite::create("bg_02.jpg");
 	bd2->setAnchorPoint(Point(0,0));
 	bd2->setPosition(0,800);
+	//!添加logo1
+	auto  logo1=Sprite::create("logo.png");
+	logo1->setPosition(Point(240,600));
+	//!添加logo2
+	auto  logo2=Sprite::create("BigPlane.png");
+	logo2->setPosition(Point(70,620));
 
 	this->addChild(bd1,1,1);
 	this->addChild(bd2,1,2);
+	this->addChild(logo1,1);
+	this->addChild(logo2,1);
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Point origin = Director::getInstance()->getVisibleOrigin();
 
 	//!关闭按钮
+
 	auto  closeItem = MenuItemImage::create("close01.png","close03.png",
 											CC_CALLBACK_1(WelcomeScene::closeCallBack,this));
 
@@ -43,8 +52,10 @@ bool   WelcomeScene::init(){
 		origin.y + closeItem->getContentSize().height/2));
 
 	//!开始按钮
-	auto  startItem =MenuItemFont::create("...Go...",CC_CALLBACK_1(WelcomeScene::nextSceneCallBack,this));
-	startItem->setPosition(240,500);
+	auto  startItem =MenuItemImage::create("ready.png","go.png",
+											CC_CALLBACK_1(WelcomeScene::nextSceneCallBack,this));
+	startItem->setScale(0.5);
+	startItem->setPosition(240,350);
 
 	auto menu = Menu::create(closeItem,startItem, NULL);
 	menu->setPosition(Point::ZERO);

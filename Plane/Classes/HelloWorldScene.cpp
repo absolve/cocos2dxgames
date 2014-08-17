@@ -48,10 +48,16 @@ bool HelloWorld::init()
 	closeItem->setPosition(Point(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
                                800-closeItem->getContentSize().height/2));
 
+	auto   onItem=MenuItemImage::create("pauseBT.png","pauseBT.png",
+											CC_CALLBACK_1(HelloWorld::pauseCallBack,this));
+	
+	onItem->setPosition(25,770);
+
     // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
+    auto menu = Menu::create(closeItem,NULL);
+	menu->addChild(onItem,1,1);
     menu->setPosition(Point::ZERO);
-    this->addChild(menu, 5);
+    this->addChild(menu,5,11);
 
     /////////////////////////////
     // 3. add your codes below...
@@ -79,6 +85,9 @@ bool HelloWorld::init()
 	scores=0;
 	highScore=getHighScore();
 	XOffset=YOffset=0;
+	//!设置游戏暂停的标志开始设置为否
+	pauseFlag=false;
+
 	//!添加事件监听
 	auto    listener=EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);
@@ -109,8 +118,8 @@ bool HelloWorld::init()
 	this->addChild(playerlayer,2,2);
 
 	//!添加特殊物品层
-	/*goodslayer= GoodsLayer::create();
-	this->addChild(goodslayer,3,3);*/
+	goodslayer= GoodsLayer::create();
+	this->addChild(goodslayer,3,3);
     
 	//!设置当前的游戏状态
 	currState=GameReady::getInstance();
@@ -210,6 +219,27 @@ void  HelloWorld::changeState(state<HelloWorld> *s){
 		currState->exit(this);
 		currState=s;
 		s->enter(this);
+
+}
+
+void  HelloWorld::pauseCallBack(Ref* pSender){
+
+
+	auto   menu=dynamic_cast<Menu*>(this->getChildByTag(11));
+	auto   item1=dynamic_cast<MenuItemImage*>(menu->getChildByTag(1));
+	auto   spriteFrame=SpriteFrameCache::getInstance();
+	if(pauseFlag){
+		item1->setNormalSpriteFrame(spriteFrame->getSpriteFrameByName("pauseBT.png"));
+		item1->setSelectedSpriteFrame(spriteFrame->getSpriteFrameByName("pauseBT.png"));
+		this->changeState(GameStart::getInstance());
+		pauseFlag=false;
+	}else{
+		item1->setNormalSpriteFrame(spriteFrame->getSpriteFrameByName("startBT.png"));
+		item1->setSelectedSpriteFrame(spriteFrame->getSpriteFrameByName("startBT.png"));
+		this->changeState(GamePause::getInstance());
+		pauseFlag=true;
+	}
+
 
 }
 

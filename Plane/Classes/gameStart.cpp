@@ -3,7 +3,7 @@
 #include "PlayerLayer.h"
 #include "EnemyLayer.h"
 #include "GameOver.h"
-
+#include "GoodsLayer.h"
 
 USING_NS_CC;
 
@@ -74,6 +74,34 @@ void		GameStart::execute(HelloWorld* s){
 		layer1->createEnemy();
 		layer1->setTime(0);
 	}
+
+	//!检测炸弹是否启动
+	auto   goodslayer=s->goodslayer;
+	if(goodslayer->getIsEexplosion()){
+		//!计算所有被消灭的敌机分数
+		int score1=0;
+		for(auto i=layer1->enemyNum.begin();i!=layer1->enemyNum.end();){
+					auto  point1=(*i)->getPositionY();
+					if(point1<800){
+						int  life=(int)(*i)->getUserData();
+						score1+=life;
+						//!设置死亡敌机消失时间
+						life=50;
+						(*i)->setUserData((void*)life);
+						(*i)->stopAllActions();
+						(*i)->getChildByTag(1)->setVisible(true);
+						//!将死亡的敌机放到死亡容器中
+						layer1->deadEnemy.pushBack(*i);
+						i=layer1->enemyNum.erase(i);
+					}else{
+						i++;
+					}
+		}
+		score1+=s->getScore();
+		s->setScore(score1);
+		goodslayer->setExplosion(false);
+	}
+
 	//!添加子弹
 	layer->update(Director::getInstance()->getDeltaTime());
 	/////////////////////////////////////////////////////
@@ -134,18 +162,19 @@ void		GameStart::execute(HelloWorld* s){
 }
 
 void		GameStart::exit(HelloWorld * s){
+
 	  //!暂停玩家层的定时器,停止所有的敌机动作,隐藏当前分数
 	  auto   player=s->playerlayer;
 	  //!清除所有的子弹
 	  for(auto i=player->bullets.begin();i!=player->bullets.end();++i){
-		  (*i)->stopAllActions();
+		  (*i)->pauseSchedulerAndActions();
 	  }
 	  //!停止飞机的动画
 	  auto  s1=player->getPlayer();
-	  s1->stopAllActions();
+	  s1->pauseSchedulerAndActions();
 	  auto	 enemy=s->enemylayer;
 	  for(auto  i=enemy->enemyNum.begin();i!=enemy->enemyNum.end();++i){
-			(*i)->stopAllActions();
+			(*i)->pauseSchedulerAndActions();
 	  }
 	  for(auto  i=enemy->deadEnemy.begin();i!=enemy->deadEnemy.end();++i){
 			(*i)->removeFromParent();	

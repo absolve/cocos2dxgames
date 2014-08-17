@@ -26,6 +26,11 @@ void        GameReady::destory()
 
 void       GameReady::enter(HelloWorld *s){
 
+	//!设置暂停按钮不可点击
+	auto   menu=dynamic_cast<Menu*>(s->getChildByTag(11));
+	auto   item1=dynamic_cast<MenuItemImage*>(menu->getChildByTag(1));
+	item1->setEnabled(false);
+
 	//!显示一个准备字符
 	auto    s1=s->getChildByTag(9);
 	s1->setVisible(true);
@@ -55,8 +60,13 @@ void	   GameReady::execute(HelloWorld*){
 }
 
 void       GameReady::exit(HelloWorld *s){
+
 	auto    s1=s->getChildByTag(9);
 	s1->setVisible(false);
+	//!设置暂停按钮不可点击
+	auto   menu=dynamic_cast<Menu*>(s->getChildByTag(11));
+	auto   item1=dynamic_cast<MenuItemImage*>(menu->getChildByTag(1));
+	item1->setEnabled(true);
 
 }
 

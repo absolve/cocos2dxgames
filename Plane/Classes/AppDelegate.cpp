@@ -34,7 +34,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
 	//!android运行注释
-	/*glview->setFrameZoomFactor(0.9);*/
+	//glview->setFrameZoomFactor(0.9);
 	//!设置分辨率
 	glview->setDesignResolutionSize(480,800,ResolutionPolicy::EXACT_FIT);
 
