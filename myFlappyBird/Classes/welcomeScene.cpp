@@ -5,61 +5,45 @@ USING_NS_CC;
 
 
 Scene*  welcomeScene::createScene(){
-
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
-
 	// 'layer' is an autorelease object
 	auto layer = welcomeScene::create();
-
 	// add layer as a child to scene
 	scene->addChild(layer);
-
 	// return the scene
 	return scene;
-
 }
 
 bool   welcomeScene::init(){
-
 	// 1. super init first
 	if ( !Layer::init() )
 	{
 		return false;
 	}
-
-
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Point origin = Director::getInstance()->getVisibleOrigin();
-
 	//!退出按钮
 	auto closeItem = MenuItemImage::create(
 		"CloseNormal.png",
 		"CloseSelected.png",
 		CC_CALLBACK_1(welcomeScene::menuCloseCallback, this));
-
 	closeItem->setPosition(Point(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
 		origin.y + closeItem->getContentSize().height/2));
 
-
 	//!游戏开始按钮
-	auto  starGame =MenuItemFont::create("Go",
-								CC_CALLBACK_1(welcomeScene::gameStartCallBack, this));
-
-	starGame->setPosition(100,450);
+	auto  starGame =MenuItemImage::create("images/start.png","images/start1.png",CC_CALLBACK_1(welcomeScene::gameStartCallBack,this));
+	starGame->setPosition(180,400);
 	
-
 	auto menu = Menu::create(closeItem,starGame, NULL);
 	menu->setPosition(Point::ZERO);
 
 	this->addChild(menu,1);
 
-
 	//!添加背景
 	auto  bg=Sprite::create("images/background2.png");
 	bg->setScaleX(2.5);
 	bg->setScaleY(2.5);
-
 	// position the sprite on the center of the screen
 	bg->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 	this->addChild(bg,0);
@@ -83,15 +67,10 @@ bool   welcomeScene::init(){
 	listener->onTouchBegan=CC_CALLBACK_2(welcomeScene::touchEvent,this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener,this);
 
-
 	return  true;
-
 }
 
 bool  welcomeScene::touchEvent(Touch *touch,Event * event){
-
-	/*log("hello");*/
-
 	return  true;
 }
 
@@ -115,13 +94,10 @@ void  welcomeScene::menuCloseCallback(cocos2d::Ref* pSender){
 }
 
 void welcomeScene::gameStartCallBack(cocos2d::Ref* pSender){
-
 	//切换场景
-	Director::getInstance()->replaceScene(TransitionFade::create(1.2,
-		HelloWorld::createScene()));
+	Director::getInstance()->replaceScene(TransitionFade::create(1.2,HelloWorld::createScene()));
 }
 
 void welcomeScene::gameOptionCallBack(cocos2d::Ref* pSender){
-
 }
 

@@ -7,7 +7,6 @@ class   HelloWorld;
 class gameStart:public state<HelloWorld>
 {
 public:
-
 	static gameStart*  getInstance();
 	static void        destroy();
 
@@ -15,10 +14,8 @@ public:
 	void   exit(HelloWorld*);
 	void   execute(HelloWorld*);
 	void   handleEvent(HelloWorld*);
-
 private:
 	static  gameStart *  instance;
-	
 };
 
 #endif

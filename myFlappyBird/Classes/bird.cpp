@@ -11,42 +11,33 @@ bird::bird(){
 	isflying=false;*/
 	pbird=NULL;
 	srand(time(0));
-
 }
 
 bird*  bird::getInstance(){
-
 	if(instance==NULL){
 		instance =new bird();
 		return instance;
 	}
 	return  instance;
-
 }
 
 void   bird::destory(){
-
 	if(instance!=NULL){
 		delete  instance;
 		instance=NULL;
-
 	}
 }
 
 float bird::getYpos(){
-
 	if(pbird!=NULL){
 		auto  ypos=pbird->getPositionY();
 		return  ypos;
 	}
-	
 	return   0;
 }
 
 
 void  bird::createBird(float x,float y,HelloWorld *h){
-
-
 	//!初始化信息
 	aspeed=-400.0f;
 	flySpeed=0.0f;
@@ -54,7 +45,6 @@ void  bird::createBird(float x,float y,HelloWorld *h){
 	isflying=false;
 	//!随机化小鸟动画图片
 	auto   bi=rand()%4;
-
 	//!添加动画
 	auto   cache=SpriteFrameCache::getInstance();
 	cache->addSpriteFramesWithFile("images/birds.plist");
@@ -69,7 +59,6 @@ void  bird::createBird(float x,float y,HelloWorld *h){
 		animFrames.pushBack(frames);
 
 	}
-
 	//!设置动画
 	auto   anm=Animation::createWithSpriteFrames(animFrames,0.15f);
 
@@ -82,37 +71,25 @@ void  bird::createBird(float x,float y,HelloWorld *h){
 	pbird->setPosition(x,y);
 	h->addChild(pbird,3);
 	pbird->runAction(RepeatForever::create(Animate::create(anm)));
-
-	
-
 }
 
 void  bird::removeBird(){
-
 	if(pbird!=NULL){
 		pbird->removeFromParent();
 		pbird=NULL;
-
 	}
 }
 
 void  bird::stopAni(){
-
 	if(pbird!=NULL)
 		pbird->stopAllActions();
-
 }
 
 
 void  bird::update(float  dt){
-
-	
 	flySpeed+=aspeed*dt;
-
 	auto   ypos=pbird->getPositionY();
-
-	if(getflying()){
-		
+	if(getflying()){	
 		fly(dt);
 	}else{
 		/*if(ypos>=150){
@@ -125,7 +102,6 @@ void  bird::update(float  dt){
 			pbird->setRotation(rotation);
 		}
 	}
-	
 }
 
 void  bird::fly(float  dt){
@@ -137,26 +113,18 @@ void  bird::fly(float  dt){
 		flySpeed=0;
 		return;
 	}
-
 	//!设置初速度
 	if(flySpeed>-120){
-
 		flySpeed +=aspeed*dt; 
 		auto  ypos=pbird->getPositionY()+flySpeed*dt+aspeed*dt*dt/2;
-
 		pbird->setPositionY(ypos);
-
-		if(rotation>-10.0f ){
-			
+		if(rotation>-10.0f ){		
 			rotation +=aspeed*dt*1.5;
 			pbird->setRotation(rotation);
 		}
-		
 	}else{
-		setflying(false);
-		
+		setflying(false);	
 	}
-	
 }
 
 

@@ -11,7 +11,6 @@ class  HelloWorld;
 class pipe 
 {
 public:
-	
 		 static  pipe*   getInstance() ;
 		 static  void    destroy();
 
@@ -22,7 +21,6 @@ public:
 		 void createPipeBottom(float,float,HelloWorld*);
 
 private:
-
 		   pipe(){ time=3.5f;   }
 		   static   pipe*  instance;
 		   //!水管移动的时间

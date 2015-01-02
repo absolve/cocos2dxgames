@@ -9,7 +9,6 @@ class  HelloWorld;
 class bird
 {
 public:
-	
 	static  bird*   getInstance();
 	static  void    destory();
 	void	        createBird(float,float,HelloWorld *);
@@ -29,12 +28,7 @@ public:
 	//!获取小鸟的矩形大小
 	Rect    getRect();
 
-
-
-
 	CC_SYNTHESIZE(bool,isflying,flying)
-
-
 private:
 
 	bird();
@@ -47,7 +41,6 @@ private:
 	float    flySpeed;
 	//!旋转角度
 	float    rotation;
-
 };
 
 #endif // !1

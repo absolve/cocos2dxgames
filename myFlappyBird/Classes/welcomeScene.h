@@ -6,17 +6,11 @@
 
 class welcomeScene: public cocos2d::Layer
 {
-public:
-	
+public:	
 	static cocos2d::Scene* createScene();
-
 	virtual bool init();
-
 	CREATE_FUNC(welcomeScene);
-
-
 public:
-
 	void menuCloseCallback(cocos2d::Ref* pSender);
 	//!开始游戏按钮
 	void gameStartCallBack(cocos2d::Ref* pSender);
@@ -24,7 +18,6 @@ public:
 	void gameOptionCallBack(cocos2d::Ref* pSender);
 	//!点击事件
 	bool   touchEvent(cocos2d::Touch *touch,cocos2d::Event * event);
-
 };
 
 #endif // !1

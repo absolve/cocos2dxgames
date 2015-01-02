@@ -29,11 +29,9 @@ bool HelloWorld::init()
     if ( !Layer::init() )
     {
         return false;
-    }
-    
+    }  
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
-
     /////////////////////////////
     // 2. add a menu item with "X" image, which is clicked to quit the program
     //    you may modify it.
@@ -42,22 +40,17 @@ bool HelloWorld::init()
     auto closeItem = MenuItemImage::create(
                                            "CloseNormal.png",
                                            "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-    
+                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));  
 	closeItem->setPosition(Point(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
                                 origin.y + closeItem->getContentSize().height/2));
-
     // create menu, it's an autorelease object
     auto menu = Menu::create(closeItem, NULL);
     menu->setPosition(Point::ZERO);
     this->addChild(menu, 5,40);
-
     /////////////////////////////
     // 3. add your codes below...
-
     //添加定时器
 	schedule(schedule_selector(HelloWorld::update));
-
     //!添加背景图片1
     auto sprite = Sprite::create("images/background2.png");
 	sprite->setScaleX(2.5);
@@ -69,7 +62,6 @@ bool HelloWorld::init()
     // add the sprite as a child to this layer
     this->addChild(sprite, 0);
     
-
 	//!添加背景图片2
 	auto   sprite1=Sprite::create("images/backgroundBottom.png");
 	sprite1->setAnchorPoint(Point(0,0));
@@ -83,7 +75,6 @@ bool HelloWorld::init()
 	sprite2->setScaleX(2);
 	sprite2->setScaleY(2);
 	this->addChild(sprite2,2,2);
-
 
 	//!添加游戏结束图片
 	auto   sprite3=Sprite::create("images/gameover.png");
@@ -117,7 +108,6 @@ bool HelloWorld::init()
 	fscores->addChild(newsprite,1,1);
 	newsprite->setVisible(false);
 
-
 	//!添加分数面板最高分字体
 	this->getUserScore();
 	sprintf(c,"%d",userScore);
@@ -126,17 +116,14 @@ bool HelloWorld::init()
 	fuscores->setVisible(false);
 	this->addChild(fuscores,5,101);
 
-
 	//!添加重新开始按钮
-	auto   restartItem = MenuItemFont::create("Restart",
-						CC_CALLBACK_1(HelloWorld::restartCallBack,this));
-
-	restartItem->setPosition(110,230);
+	auto   restartItem = MenuItemImage::create("images/pauseRestart.png","images/pauseRestart1.png",CC_CALLBACK_1(HelloWorld::restartCallBack,this));
+	restartItem->setPosition(100,240);
 	restartItem->setVisible(false);
+	restartItem->setScale(0.7);
 	menu->addChild(restartItem,0,1992);
 
 	//!添加分数
-
 	sprintf(a,"scores:%d",score);
 	auto   scores=LabelTTF::create(a,"Arial",25);
 	scores->setPosition(180,620);
@@ -184,59 +171,46 @@ bool HelloWorld::init()
 	this->addChild(gold,3,25);
 
 	srand(time(0));
-
 	_time=0.0f;
-
 	//!设置当前状态
 	currState =gameReady::getInstance();
 	currState->enter(this);
-
     return true;
 }
 
 void HelloWorld::getUserScore(){
-
-	
 	auto   file=UserDefault::getInstance();
-
 	userScore=file->getIntegerForKey("userScore");
-
 }
 
 void HelloWorld::setUserScore(){
-
 	auto   file=UserDefault::getInstance();
 	file->setIntegerForKey("userScore",score);
 	file->flush();
 	userScore=score;
-
 }
 
 void HelloWorld::update(float dt){
-
 	/*log("hello world");*/
 	_time+=dt;
 	currState->execute(this);
-
 }
 
 void HelloWorld::changeState(state<HelloWorld> * s){
-
 	currState->exit(this);
 	currState=s;
 	currState->enter(this);
-
 }
 
 void HelloWorld::checkCollision(){
-
 	auto   ypos=bird::getInstance()->getYpos();
 	if(ypos<=160){
 		this->changeState(gameEnd::getInstance());
 	}
-
 	//!检测小鸟与水管的碰撞
 	auto   rect1=bird::getInstance()->getRect();
+	rect1.size.height-=5;
+	rect1.size.width-=5;
 	for(auto  i=pipes.begin();i!=pipes.end();++i)
 	{
 		auto  rect2=(*i)->getBoundingBox();
@@ -244,25 +218,17 @@ void HelloWorld::checkCollision(){
 			changeState(gameEnd::getInstance());
 			break;
 		}	
-	
 	}
-
 }
 
 bool HelloWorld::touchEvent(Touch *touch,Event * event){
-
 	/*log("hello");*/
-
 	currState->handleEvent(this);
-
 	return  true;
 }
 
 void HelloWorld::restartCallBack(Ref* pSender){
-
-
 	changeState(gameReady::getInstance());
-
 }
 
 

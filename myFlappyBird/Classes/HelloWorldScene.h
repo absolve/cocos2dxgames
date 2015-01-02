@@ -35,9 +35,7 @@ public:
 	bool   touchEvent(cocos2d::Touch *touch,cocos2d::Event * event);
 	//!状态切换
 	void   changeState(state<HelloWorld> *);
-
 public:
-
 	//更新函数
 	void    update(float  dt);
 	//!存储水管的容器
@@ -62,12 +60,9 @@ public:
 	void     getUserScore();
 	//!写入游戏最高分数
 	void     setUserScore();
-
 private:
-
 	//!游戏中的当前状态
 	state<HelloWorld> * currState;
-
 };
 
 #endif // __HELLOWORLD_SCENE_H__
