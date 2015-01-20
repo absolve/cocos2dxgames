@@ -166,7 +166,6 @@ var welcomeLayer = cc.Layer.extend({
 				this.addBlock(this.getCArray[0], cc.p(-10 + i * 100, -100), true);
 			}
 			this.colorDot();
-
 		},
 		//碰撞检测
 		collision_detection : function () {
@@ -175,12 +174,12 @@ var welcomeLayer = cc.Layer.extend({
 			for (var i in this.blockArray) {
 				var rect2 = this.blockArray[i].getBoundingBox();
 				rect2.x += 20;
-				rect2.height -= 18;
-				rect2.width -= 38;
+				rect2.height -= 22;
+				rect2.width -= 45;
 				//判断是否碰撞
 				if (rect1.x + rect1.width >= rect2.x && rect2.x + rect2.width >= rect1.x && rect1.y + rect1.height >= rect2.y && rect2.y + rect2.height >= rect1.y) {
 					if (this.blockArray[i].allowStand === true) {
-						if (rect2.y + rect2.height <= rect1.y + 13) {
+						if (rect2.y + rect2.height <= rect1.y + 8) {
 							//判断是否正在跳跃阶段
 							if (this._player.speed <= 0) {
 								this._player.speed = 0;
@@ -188,7 +187,7 @@ var welcomeLayer = cc.Layer.extend({
 								nflag = false;
 							}
 						} else {
-							this._player.x -= 2.5;
+							this._player.x -= 3;
 						}
 					}
 				}
@@ -217,18 +216,18 @@ var welcomeLayer = cc.Layer.extend({
 				//碰撞检测
 				this.collision_detection();
 				//更新玩家
-				this._player.update(dt);
+				this._player.update(0.0178);
 			} else if (this.gstart) {
 				//游戏时间增加
-				this.time += dt;
+				this.time += 0.0176;
 				//移动方块
 				for (var i in this.blockArray) {
-					this.blockArray[i].x = this.blockArray[i].x - 2.5;
+					this.blockArray[i].x = this.blockArray[i].x - 3;
 				}
-				//更新玩家
-				this._player.update(dt);
 				//碰撞检测
 				this.collision_detection();
+				//更新玩家
+				this._player.update(0.0178);
 				//如果玩家已获胜
 				if (this.win == true) {
 					this.runFlag = false;
@@ -315,6 +314,10 @@ var welcomeLayer = cc.Layer.extend({
 					if (this.getCArray.length > parseInt(this.num[0])) {
 						cc.sys.localStorage.setItem(rankname[0], this.getCArray.length);
 						this.num[0] = this.getCArray.length;
+						//添加获得的颜色数
+						for (var i = 0; i < parseInt(this.num[0]); i++) {
+							this.colorDots[i].setColor(this.colorArray[0]);
+						}
 					}
 					cc.sys.localStorage.setItem(rankname[1], this.getCArray.length);
 					this.num[2]++;
@@ -324,7 +327,6 @@ var welcomeLayer = cc.Layer.extend({
 					cc.sys.localStorage.setItem(rankname[2], this.num[2]);
 					this.num[4] += this.getCArray.length;
 					cc.sys.localStorage.setItem(rankname[4], this.num[4]);
-
 					//游戏时间清除
 					this.time = 0.0;
 					//获取的方块数清零
@@ -348,7 +350,6 @@ var welcomeLayer = cc.Layer.extend({
 					});
 					this._player.dead = false;
 					this._player.speed = 0;
-
 					//状态恢复
 					this.gend = false;
 					this.gidle = true;
@@ -439,18 +440,17 @@ var welcomeLayer = cc.Layer.extend({
 		//烟花效果
 		firework : function (point1, point2) {
 			for (var i = 0; i < 40; i++) {
-				var sp = new cc.Sprite(res.scoreDot_png);
+				var sp = new cc.Sprite(res.particle_png);
 				sp.attr({
 					x : point1.x,
 					y : point1.y,
-
 				});
 				//设置随机颜色
 				sp.setColor(cc.color(Math.round(Math.random() * 255), Math.round(Math.random() * 255), Math.round(Math.random() * 255)));
 				//设置精灵的动作
-				var fire = new cc.MoveTo(1, cc.p(point2.x - 80 + Math.round(Math.random() * 160), point2.y - 150 + Math.round(Math.random() * 300)));
+				var fire = new cc.MoveTo(1, cc.p(point2.x - 80 + Math.round(Math.random() * 120), point2.y - 100 + Math.round(Math.random() * 200)));
 				//下落
-				var downRotate = new cc.MoveBy(10, cc.p(0, -150));
+				var downRotate = new cc.MoveBy(8 + Math.round(Math.random() * 5), cc.p(0, -150));
 				sp.runAction(new cc.Sequence(new cc.EaseExponentialOut(fire), downRotate));
 				this.addChild(sp, 3);
 				this.fireArray.push(sp);
@@ -466,6 +466,9 @@ var welcomeLayer = cc.Layer.extend({
 					y : 500
 				});
 				this.addChild(this.colorDots[i]);
+			}
+			for (var i = 0; i < parseInt(this.num[0]); i++) {
+				this.colorDots[i].setColor(this.colorArray[0]);
 			}
 			for (var i = 0; i < 10; i++) {
 				this.colorDots[i].runAction(new cc.MoveBy(0.1 + i * 0.06, cc.p(-380, 0)));
@@ -851,7 +854,6 @@ var welcomeLayer = cc.Layer.extend({
 			this.homeBtn.runAction(new cc.MoveBy(0.3, cc.p(0, 100)));
 			this.pauseBtn.setVisible(false);
 			this.helpState = true;
-
 			//添加字符串
 			this.helpWord1.setVisible(true);
 			this.helpWord2.setVisible(true);
@@ -881,6 +883,7 @@ var player = cc.Sprite.extend({
 			this._super(fileName, rect, rotated);
 			this.anchorX = 0;
 			this.anchorY = 0;
+			this.setScale(1.3);
 			//设置是否死亡
 			this.dead = false;
 			//跳跃次数
