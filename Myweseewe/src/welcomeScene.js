@@ -134,7 +134,7 @@ var welcomeLayer = cc.Layer.extend({
 			});
 			this.addChild(this._player, 2);
 			//添加定时器
-			this.scheduleUpdate();
+			this.schedule(this.update, 0.01);
 			//添加事件
 			this.addEventEventListener();
 			//烟火的容器
@@ -179,7 +179,7 @@ var welcomeLayer = cc.Layer.extend({
 				//判断是否碰撞
 				if (rect1.x + rect1.width >= rect2.x && rect2.x + rect2.width >= rect1.x && rect1.y + rect1.height >= rect2.y && rect2.y + rect2.height >= rect1.y) {
 					if (this.blockArray[i].allowStand === true) {
-						if (rect2.y + rect2.height <= rect1.y + 8) {
+						if (rect2.y + rect2.height <= rect1.y + 12) {
 							//判断是否正在跳跃阶段
 							if (this._player.speed <= 0) {
 								this._player.speed = 0;
@@ -187,7 +187,7 @@ var welcomeLayer = cc.Layer.extend({
 								nflag = false;
 							}
 						} else {
-							this._player.x -= 3;
+							this._player.x -= 6;
 						}
 					}
 				}
@@ -199,7 +199,7 @@ var welcomeLayer = cc.Layer.extend({
 			//根据游戏状态更新
 			if (this.gidle) {
 				for (var i in this.blockArray) {
-					this.blockArray[i].x = this.blockArray[i].x - 2;
+					this.blockArray[i].x = this.blockArray[i].x - 3.5;
 				}
 				//适当的添加方块
 				if (this.blockArray[this.blockArray.length - 1].x < 380) {
@@ -216,18 +216,18 @@ var welcomeLayer = cc.Layer.extend({
 				//碰撞检测
 				this.collision_detection();
 				//更新玩家
-				this._player.update(0.0178);
+				this._player.update(0.017);
 			} else if (this.gstart) {
 				//游戏时间增加
 				this.time += 0.0176;
 				//移动方块
 				for (var i in this.blockArray) {
-					this.blockArray[i].x = this.blockArray[i].x - 3;
+					this.blockArray[i].x = this.blockArray[i].x - 3.5;
 				}
 				//碰撞检测
 				this.collision_detection();
 				//更新玩家
-				this._player.update(0.0178);
+				this._player.update(0.017);
 				//如果玩家已获胜
 				if (this.win == true) {
 					this.runFlag = false;
@@ -889,7 +889,7 @@ var player = cc.Sprite.extend({
 			//跳跃次数
 			this._jump = 0;
 			//加速度
-			this.aspeed = -560;
+			this.aspeed = -1500;
 			//速度
 			this.speed = 0.0;
 			//重力开关
@@ -920,7 +920,7 @@ var player = cc.Sprite.extend({
 			if (this._jump < 2) {
 				this.flag = true;
 				this._jump++;
-				this.speed = 300;
+				this.speed = 500;
 			}
 		}
 	});
